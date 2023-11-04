@@ -2,7 +2,7 @@ WITH transformed_hosts AS (
     SELECT
         CASE
             WHEN LOWER(host_neighbourhood) IN (SELECT DISTINCT suburb_name FROM {{ ref('lga_suburb_stg') }})
-            THEN suburb_name
+            THEN suburb_name  -- Use suburb_name when host_neighbourhood matches a distinct suburb_name
             ELSE LOWER(host_neighbourhood)
         END AS host_neighbourhood_lga,
         TO_CHAR(scraped_date, 'YYYY-MM') AS month_year,

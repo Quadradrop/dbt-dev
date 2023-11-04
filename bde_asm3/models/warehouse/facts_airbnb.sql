@@ -6,7 +6,7 @@ WITH check_dimensions AS (
             ELSE 0
         END AS listing_id,
         CASE
-            WHEN listing_neighbourhood IN (SELECT DISTINCT SUBURB_NAME FROM {{ ref('lga_suburb_stg') }})
+            WHEN LOWER(listing_neighbourhood) IN (SELECT DISTINCT LOWER(SUBURB_NAME) FROM {{ ref('lga_suburb_stg') }})
             THEN listing_neighbourhood
             ELSE 'unknown'
         END AS listing_neighbourhood,
@@ -52,6 +52,7 @@ SELECT
     h.room_type,
     h.accommodates,
     b.lga_name,
+	b.suburb_name,
     d.Tot_P_M,
 	d.Tot_P_F,
 	d.Tot_P_P,
